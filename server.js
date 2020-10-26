@@ -3,22 +3,20 @@ const connectDB = require('./config/db')
 
 const app = express()
 
-//connection with db made
-connectDB()
-
-app.use('/api/users', require('./routes/users'))
-app.use('/api/auth', require('./routes/auth'))
-app.use('/api/contacts', require('./routes/contacts'))
 
 //middleware for post requests
 app.use(express.json({extended: false}))
 
+//connection with db made
+connectDB()
 
 app.get('/', (req, res)=> {
   res.json({msg: 'contact app'})
 })
 
-
+app.use('/api/users', require('./routes/users'))
+app.use('/api/auth', require('./routes/auth'))
+app.use('/api/contacts', require('./routes/contacts'))
 
 
 const PORT = process.env.PORT || 6000
