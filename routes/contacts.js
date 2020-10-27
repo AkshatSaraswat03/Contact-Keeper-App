@@ -72,6 +72,11 @@ router.put('/:id', auth, async (req,res)=> {
       return res.status(400).json({msg: "Contact does not exist"})
     }
 
+    //making sure user owns contact
+    if (contact.user.toString() !== req.user.id){
+      return res.status(401).json({msg : "not authorized"})
+    }
+
     //updating contact
     contact = await Contact.findByIdAndUpdate(
       req.params.id,
@@ -95,11 +100,14 @@ router.delete('/:id', auth, async (req,res)=> {
 
   try {
     const contact = await Contact.findById(req.params.id)
-
     if(!contact) return res.status(400).json({msg: "contact not found"})
 
-    await Contact.findByIdAndRemove(req.params.id)
+    //making sure user owns contact
+    if (contact.user.toString() !== req.user.id){
+      return res.status(401).json({msg : "not authorized"})
+    }
 
+    await Contact.findByIdAndRemove(req.params.id)
     res.json({msg: "contact removed"})
 
   } catch (err) {
