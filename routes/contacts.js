@@ -51,12 +51,61 @@ async (req,res)=> {
 
 })
 
-router.put('/:id', auth, (req,res)=> {
-  res.send('update contact')
+
+//edit a contact
+router.put('/:id', auth, async (req,res)=> {
+  
+  const {name, email, phone, type} = req.body
+
+  //update new details
+  const updatedContact = {}
+
+  if(name) updatedContact.name = name
+  if(email) updatedContact.email = email
+  if(phone) updatedContact.phone = phone
+  if(type) updatedContact.type = type
+
+  try {
+    let contact = Contact.findById(req.params.id)
+
+    if(!contact){
+      return res.status(400).json({msg: "Contact does not exist"})
+    }
+
+    //updating contact
+    contact = await Contact.findByIdAndUpdate(
+      req.params.id,
+      {$set: updatedContact},
+      {new: true}
+    )
+
+    res.json(contact)
+
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send("server Error")
+  }
+
 })
 
-router.delete('/:id', auth, (req,res)=> {
-  res.send('delete contact')
+
+//deleting a contact
+
+router.delete('/:id', auth, async (req,res)=> {
+
+  try {
+    const contact = await Contact.findById(req.params.id)
+
+    if(!contact) return res.status(400).json({msg: "contact not found"})
+
+    await Contact.findByIdAndRemove(req.params.id)
+
+    res.json({msg: "contact removed"})
+
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send("Server Error")
+  }
 })
 
 module.exports = router
