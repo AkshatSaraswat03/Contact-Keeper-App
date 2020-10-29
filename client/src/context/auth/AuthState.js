@@ -47,7 +47,7 @@ const AuthState = props => {
     //creating application/json header fr post request
     const config = {
       headers: {
-        'Content-type': 'application/json'
+        'Content-Type': 'application/json'
       }
     }
 
@@ -69,7 +69,7 @@ const AuthState = props => {
     //creating application/json header fr post request
     const config = {
       headers: {
-        'Content-type': 'application/json'
+        'Content-Type': 'application/json'
       }
     }
 
@@ -86,6 +86,7 @@ const AuthState = props => {
   }
 
   //Logout
+  const logout = ()=> dispatch({type: LOGOUT})
 
   //Clear Errors
   const clearErrors = () => dispatch({type: CLEAR_ERRORS})
@@ -100,7 +101,8 @@ const AuthState = props => {
     register,
     clearErrors,
     loadUser,
-    login
+    login,
+    logout
 
   }}>
   {props.children}

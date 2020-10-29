@@ -18,7 +18,7 @@ const Login = (props) => {
     }
 
 
-    if(error === 'Invalid credentials'){
+    if(error === 'invalid password'){
       setAlert(error, 'danger')
       clearErrors()
     }
