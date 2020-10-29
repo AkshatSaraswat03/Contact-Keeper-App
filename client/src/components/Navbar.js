@@ -1,14 +1,18 @@
 import React, {useContext} from 'react'
 import {Link} from 'react-router-dom'
 import AuthContext from '../context/auth/authContext'
+import ContactContext from '../context/contact/contactContext'
 
 const Navbar = ({title}) => {
   const authContext = useContext(AuthContext)
+  const contactContext = useContext(ContactContext)
 
   const { isAuthenticated, logout, user} = authContext
+  const { clearContacts } = contactContext
 
   const onLogout = () => {
     logout()
+    clearContacts()
   }
 
 
@@ -16,7 +20,7 @@ const Navbar = ({title}) => {
     <>
       <li>Hello { user && user.name}</li>
       <li>
-        <a href="#" onClick={onLogout}>Logout</a>
+        <a href="/#" onClick={onLogout}>Logout</a>
       </li>
     </>
   )
